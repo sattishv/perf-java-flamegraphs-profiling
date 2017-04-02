@@ -1,1 +1,0 @@
-perf record -F 505 -a -g -- sleep 30 2>/dev/null; perf script -F comm,pid,tid,cpu,time,event,ip,sym,dso 2>/dev/null | ../FlameGraph/stackcollapse-perf.pl --pid | python ./scripts/stacks-to-jsons.py | python ./scripts/jsons-to-mongodb.py
