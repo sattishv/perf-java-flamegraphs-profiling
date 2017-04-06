@@ -1,3 +1,5 @@
+mkdir out
+mkdir recording
 while true
 do
   out_file_name=`date +%s`.data

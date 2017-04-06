@@ -22,7 +22,7 @@ def send_docs(docs):
     if r.status_code != 201 : #and r.text['ok'] != 1: 
         eprint("[MONGODB SENDER] couldn't properly post documents to address " + post_endpoint)
         eprint(r.text)
-	return False
+        return False
     else:
         print ("Post was done at: " +  time.strftime("%D %H:%M:%S", time.localtime()) + " with " + str(len(docs)) + " documents , timestamp is " + str(time.time()))
         return True
@@ -36,7 +36,6 @@ json_documents = []
 try:
     for line in fileinput.input():
         try:
-            #new_doc = json.loads(line)
             new_doc = ast.literal_eval(line)
             json_documents = json_documents + [new_doc]
         except ValueError:
@@ -53,10 +52,13 @@ try:
             if abort : exit(1)
             sys.stdout.flush()
     send_docs(json_documents)
-except (KeyboardInterrupt, IOError):
-    #When terminate signal or something happens that means the end of the program, send the buffered data and exit
+except IOError as e:
+    eprint("[MONGODB SENDER] terminated")
+    eprint(e)
     pass
-
+except (KeyboardInterrupt):
+    eprint("[MONGODB SENDER] terminated")
+    pass    
 
 
 
@@ -67,4 +69,5 @@ except (KeyboardInterrupt, IOError):
 
         
         
+
 
