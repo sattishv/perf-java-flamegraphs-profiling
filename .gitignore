@@ -1,1 +1,5 @@
 perf.data*
+FlameGraph
+perf-map-agent
+out
+recording

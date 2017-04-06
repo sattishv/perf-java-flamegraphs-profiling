@@ -1,1 +1,1 @@
-sudo ../FlameGraph/jmaps
+sudo ./FlameGraph/jmaps
