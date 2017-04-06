@@ -1,5 +1,8 @@
-mkdir out
-mkdir recording
+mkdir -p out
+mkdir -p recording
+
+hash perf 2>/dev/null || { echo >&2 "I require perf but it's not installed.  Aborting."; exit 1; }
+
 while true
 do
   out_file_name=`date +%s`.data
