@@ -1,0 +1,47 @@
+# This file contains the data schema used in the settings.py file
+# that the EVE framework uses to configure mongodb domains
+
+# Add this content accordingly
+
+cpu_schema = {
+    # Schema definition, based on Cerberus grammar. Check the Cerberus project
+    # (https://github.com/pyeve/cerberus) for details.
+    'stack': {
+        'type': 'string',
+        'minlength': 1,
+	'required': True,
+    },
+    'value': {
+        'type': 'integer',
+        'min': 1,
+        'required': True,
+    },
+    'timestamp': {
+	'type': 'integer',
+	'min': 1490778413,
+	'required': True,
+
+    },
+    'hostname': {
+        'type': 'string',
+	'minlength' : 1,
+        #'required': True,
+    },
+}
+
+cpu = {
+    # 'title' tag used in item links. Defaults to the resource title minus
+    # the final, plural 's' (works fine in most cases but not for 'people')
+    'item_title': 'cpu_sample',
+
+    # We choose to override global cache-control directives for this resource.
+    'cache_control': 'max-age=10,must-revalidate',
+    'cache_expires': 10,
+
+    # most global settings can be overridden at resource level
+    'resource_methods': ['GET', 'POST'],
+
+    'schema': cpu_schema
+}
+
+DOMAIN = {'cpu': cpu}
