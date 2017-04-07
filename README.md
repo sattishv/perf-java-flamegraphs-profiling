@@ -37,12 +37,27 @@ bash install-perf-java-mapper.sh
 There are three main script that can be used individually, profile.sh, map.sh and send.sh
 
 ### Profiler
-The profile, in the profile.sh script, polls profiling data with the 'perf record' comand, it has a time window and a profiling frequency as adjustable parameters.
+The profile, in the profile.sh script, polls continually profiling data with the 'perf record' comand, it has a time window (time between file dumps) and a profiling frequency (number of stack samples collected per second) as adjustable parameters.
+
+* The time window parameter adjusts the resolution of the time window that can be later used to create flamegraphs between to time points. For example, with a profiling time window of 20 seconds, flamegraphs will be plotted with 20 seconds increments. This parameters is tuned for a more real-time scenario. 
+
+* To profile with a time window of 20 seconds with a frequency of 202 Hz, run:
+```
+bash profile.sh 20 202
+```
+* The resulting file will be stored with the timestamp in a recording folder while the polling is not finished and in an out folder once finished.
 
 ### Java Mapper
-The java mapper is able to connect to the instance running JVMs and do a dump of their address spaces to a map file that is later used to create java-translated profiling info and documents. Currently, to do this dumping, the 'jmaps' script from the FlameGraph repository.
+The java mapper is able to connect to the instance running JVMs and do a dump of their address spaces to a map file that is later used to create java-translated profiling info and documents. Currently, to do this dumping, the 'jmaps' script from the FlameGraph repository. The script accepts a time window configurable parameter.
+
+* To continually map the instance running java machines every 10 seconds, run:
+```
+bash map.sh 10
+```
 
 * :exclamation: _**Be aware that the 'jmaps' script uses a hardcoded JAVA_HOME path so as to force the usage of Java 8 or higher**_ :exclamation:
+
+* :exclamation: _**In order to avoid missing data, the mapper should do a dump with a lower frequency than the life expectancy of the java machines. Any java machine that ends without being mapped will likely incur in a loss of data and result in unmapped addresses.**_ :exclamation:
 
 ### Sender
 
