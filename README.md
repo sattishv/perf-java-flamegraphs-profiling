@@ -1,5 +1,5 @@
 # perf-java-flamegraphs-profiling
-This repository provides a series of scripts to profile applications, including java applications, and create a stream of data that can be stored in a document-based database for later processing and flamegraph generation in real-time.
+This repository provides a series of scripts to profile applications using the linux 'perf' tool, including java applications without intrusive or the need to additional software, and create a stream of data that can be stored in a document-based database for later processing and flamegraph generation in near real-time and on-demand.
 
 ## Requirements
 
