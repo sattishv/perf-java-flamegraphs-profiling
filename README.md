@@ -41,7 +41,7 @@ The profile, in the profile.sh script, polls continually profiling data with the
 
 * The time window parameter adjusts the resolution of the time window that can be later used to create flamegraphs between to time points. For example, with a profiling time window of 20 seconds, flamegraphs will be plotted with 20 seconds increments. This parameters is tuned for a more real-time scenario. 
 
-* To profile with a time window of 20 seconds with a frequency of 202 Hz, run:
+* To profile with a time window of 20 seconds (default is 30) with a frequency of 202 Hz (default is 303), run:
 ```
 bash profile.sh 20 202
 ```
@@ -50,7 +50,7 @@ bash profile.sh 20 202
 ### Java Mapper
 The java mapper is able to connect to the instance running JVMs and do a dump of their address spaces to a map file that is later used to create java-translated profiling info and documents. Currently, to do this dumping, the 'jmaps' script from the FlameGraph repository. The script accepts a time window configurable parameter.
 
-* To continually map the instance running java machines every 10 seconds, run:
+* To continually map the instance running java machines every 10 seconds (default is 10), run:
 ```
 bash map.sh 10
 ```
@@ -60,6 +60,9 @@ bash map.sh 10
 * :exclamation: _**In order to avoid missing data, the mapper should do a dump with a lower frequency than the life expectancy of the java machines. Any java machine that ends without being mapped will likely incur in a loss of data and result in unmapped addresses.**_ :exclamation:
 
 ### Sender
+the sender script processes the output of the profiler using 'perf script', which in turn uses the maps created by the mapper and finally sends the processed data to a MongoDB database.
 
-## Examples
-
+* To continually send the generated data every 30 seconds (default is 30), run:
+```
+bash send.sh 30
+```
