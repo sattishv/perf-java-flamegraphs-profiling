@@ -11,10 +11,16 @@ else
     exit 1;
 fi
 
+
+
+TIME_WINDOW_SECONDS="${1:-30}"
+PROFILING_FREQUENCY="${2:-303}"
+echo "[PERF PROFILER] Going to profile with a '$TIME_WINDOW_SECONDS' seconds time window and with '$PROFILING_FREQUENCY' HZ frequency"
 while true
 do
   out_file_name=`date +%s`.data
-  perf record -F 505 -a -g -o recording/$out_file_name -- sleep 30
+  perf record -F $PROFILING_FREQUENCY -a -g -o recording/$out_file_name 2>/dev/null -- sleep $TIME_WINDOW_SECONDS
   mv recording/$out_file_name out
+  echo "Profiled correctly at " `date`
 done
 
