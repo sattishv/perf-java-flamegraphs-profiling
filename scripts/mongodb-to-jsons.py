@@ -11,32 +11,29 @@ import json
 def eprint(*args, **kwargs):
     print(*args, file=sys.stderr, **kwargs)
 
-get_endpoint = 'http://mongodb:27080/profiling/map_reduce_example/_find'
+
+def get_data(start_time, end_time):
+    get_endpoint = 'http://mongodb:5001/stacks/'
+    payload = {'start_time': start_time, "end_time": end_time}
+
+    r = requests.get(get_endpoint, params=payload)
+    if r.status_code != 200:
+        eprint("COULDN'T GET DOCS")
+        exit(1)
+    else:
+        print(json.dumps(r.json()))
 
 
-batch_size = 100
-payload = {'batch_size': batch_size}
-r = requests.get(get_endpoint, params=payload)
-if r.status_code != 200 and r.text['ok'] != 1:
-	eprint("COULDN'T GET DOCS")
-	exit(1)
-else:
-	query_id = r.text['id']
-	print(r.text["results"])
-
-
-done = False
-payload = {'batch_size': batch_size, "id": query_id}
-
-
-while (not done):
-	r = requests.get(get_endpoint, params=payload)
-	if r.status_code != 200 and r.text['ok'] != 1:
-		eprint("COULDN'T GET DOCS")
+if __name__ == "__main__":
+    if len(sys.argv) < 3 :
+        eprint("Missing arguments, at least two timestamps are needed, first one will be start time and seconds one will be end time")
+        exit(1)
+    try:
+		start_time = int(sys.argv[1]) #1491644120
+		end_time = int(sys.argv[2]) #1491644133
+    except ValueError:
+		eprint("Parameters must be integers, in fact UNIX Timestamps")
 		exit(1)
-	else:
-		docs = r.text["results"] 
-		if len(docs) < batch_size:
-			done = True
-		print(docs)
+
+    get_data(start_time, end_time)
 

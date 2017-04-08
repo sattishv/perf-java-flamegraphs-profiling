@@ -7,14 +7,13 @@ import socket
 import time 
 import requests
 import json
+import ast
 
 def eprint(*args, **kwargs):
     print(*args, file=sys.stderr, **kwargs)
 
 for line in fileinput.input():
-	docs = json.loads(line)
-	eprint("Ok was : " + str(docs["ok"]))
-	eprint("Number of docs retrieved was : " + str(len(docs["results"])))
-	for doc in docs["results"]:
-		print(doc["_id"] + " " + str(float(doc["value"])))
-
+	stacks = ast.literal_eval(line)
+	eprint("Number of stacks retrieved was : " + str(len(stacks)))
+	for key in stacks:
+		print(key + " " + str(float(stacks[key])))

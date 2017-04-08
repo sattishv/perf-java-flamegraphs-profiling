@@ -13,25 +13,28 @@ def eprint(*args, **kwargs):
     print(*args, file=sys.stderr, **kwargs)
 
 
-headers = {'content-type': 'application/json'}
-
+max_failed_connection_tries = 4
+post_doc_buffer_length = 500
+post_endpoint = 'http://mongodb:5000/cpu'
 
 def send_docs(docs):
-    #r = requests.post(post_endpoint, data={"docs": json.dumps(docs)})
-    r = requests.post(post_endpoint, headers=headers,data=json.dumps(docs))
-    if r.status_code != 201 : #and r.text['ok'] != 1: 
-        eprint("[MONGODB SENDER] couldn't properly post documents to address " + post_endpoint)
-        eprint(r.text)
-        return False
-    else:
-        print ("Post was done at: " +  time.strftime("%D %H:%M:%S", time.localtime()) + " with " + str(len(docs)) + " documents , timestamp is " + str(time.time()))
-        return True
+    headers = {'content-type': 'application/json'}
     
+    try:
+		r = requests.post(post_endpoint, headers=headers,data=json.dumps(docs))
+		if r.status_code != 201 :
+			eprint("[MONGODB SENDER] couldn't properly post documents to address " + post_endpoint)
+			eprint(r.text)
+			return False
+		else:
+			print ("Post was done at: " +  time.strftime("%D %H:%M:%S", time.localtime()) + " with " + str(len(docs)) + " documents , timestamp is " + str(time.time()))
+			return True
+    except requests.exceptions.ConnectionError as e:
+		eprint("[MONGODB SENDER] couldn't properly post documents to address " + post_endpoint)
+		eprint(e)
+		return False
 
-post_doc_buffer_length = 2000
 failed_connections = 0
-abort = False
-post_endpoint = 'http://mongodb:5000/cpu'
 json_documents = []
 try:
     for line in fileinput.input():
@@ -44,12 +47,13 @@ try:
 
         length_docs = len(json_documents)
         if(length_docs >= post_doc_buffer_length):
-            try:
-                send_docs(json_documents)
-            except(requests.exceptions.ConnectTimeout):
-                eprint("[MONGODB SENDER] couldn't send documents to address " + post_endpoint + " and tried for " + str(failed_connections) + " times")
+            if (not send_docs(json_documents)):
+                    failed_connections += 1
             json_documents = []
-            if abort : exit(1)
+            
+            if (failed_connections >= max_failed_connection_tries):
+                eprint("[MONGODB SENDER] couldn't send documents to address " + post_endpoint + " and tried for " + str(failed_connections) + " times, aborting")
+                exit(1)
             sys.stdout.flush()
     send_docs(json_documents)
 except IOError as e:
@@ -58,16 +62,4 @@ except IOError as e:
     pass
 except (KeyboardInterrupt):
     eprint("[MONGODB SENDER] terminated")
-    pass    
-
-
-
-
-
-
-
-
-        
-        
-
-
+    pass

@@ -3,3 +3,5 @@ FlameGraph
 perf-map-agent
 out
 recording
+timestamps
+*.svg
