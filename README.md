@@ -67,3 +67,11 @@ the sender script processes the output of the profiler using 'perf script', whic
 ```
 bash send.sh 30
 ```
+
+## Example
+
+Using the simple draw.sh script and passing two UNIX timestamps variables as TIME_START and TIME_END, it is possible to retrieve raw data from the mongodb database and generate locally a flamegraph in svg format, which can be interactively viewed in a browser.
+```
+bash draw.sh 1491650215 1491650518
+```
+
