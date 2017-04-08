@@ -75,3 +75,6 @@ Using the simple draw.sh script and passing two UNIX timestamps variables as TIM
 bash draw.sh 1491650215 1491650518
 ```
 
+* This example shows an execution of a Hadoop MapReduce Pi test
+![alt tag](https://s3-eu-west-1.amazonaws.com/jonatan.enes.udc.pint.proyecto/flamegraph.svg)
+
