@@ -40,13 +40,13 @@ There are three main script that can be used individually, profile.sh, map.sh an
 ### Profiler
 The profile, in the profile.sh script, polls continually profiling data with the 'perf record' comand, it has a time window (time between file dumps) and a profiling frequency (number of stack samples collected per second) as adjustable parameters.
 
-* The time window parameter adjusts the resolution of the time window that can be later used to create flamegraphs between to time points. For example, with a profiling time window of 20 seconds, flamegraphs will be plotted with 20 seconds increments. This parameters is tuned for a more real-time scenario. 
-
 * To profile with a time window of 20 seconds (default is 30) with a frequency of 202 Hz (default is 303), run:
 ```
 bash profile.sh 20 202
 ```
 * The resulting file will be stored with the timestamp in a recording folder while the polling is not finished and in an out folder once finished.
+
+* :exclamation: _**The time window parameter adjusts the resolution of the time window that can be later used to create flamegraphs between two time points. For example, with a profiling time window of 20 seconds, profiling data will be plotted with 20 seconds increments. This parameters can be tuned for a more real-time scenario.**_ :exclamation:
 
 ### Java Mapper
 The java mapper is able to connect to the instance running JVMs and do a dump of their address spaces to a map file that is later used to create java-translated profiling info and documents. Currently, to do this dumping, the 'jmaps' script from the FlameGraph repository. The script accepts a time window configurable parameter.
