@@ -3,6 +3,9 @@ This repository provides a series of scripts to profile applications using the l
 
 ## Requirements
 
+### [Java 8 or higher]
+In order to correctly use the low level profiling that perf provides with Java virtual machines, support for newer flags (PreserveStackPointer) is needed, which were added with Java 8.
+
 ### [linux perf tool](https://perf.wiki.kernel.org/index.php/Main_Page)
 With perf, system-wise profiling is achievable at a very low level.
 
