@@ -29,7 +29,7 @@ except ValueError:
 
 def get_data(start_time, end_time):
     get_endpoint = 'http://' + mongodb_ip + ':' + mongodb_port + '/stacks/'
-    payload = {'start_time': start_time, "end_time": end_time}
+    payload = {'start_time': start_time, "end_time": end_time, "hostname": hostname}
 
     r = requests.get(get_endpoint, params=payload)
     if r.status_code != 200:
@@ -40,14 +40,15 @@ def get_data(start_time, end_time):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) < 3 :
-        eprint("Missing arguments, at least two timestamps are needed, first one will be start time and seconds one will be end time")
+    if len(sys.argv) < 4 :
+        eprint("Missing arguments, at least two timestamps and a hostname are needed, first one will be start time and seconds one will be end time")
         exit(1)
     try:
 		start_time = int(sys.argv[1])
 		end_time = int(sys.argv[2])
+		hostname = sys.argv[3]
     except ValueError:
-		eprint("Parameters must be integers, in fact UNIX Timestamps")
+		eprint("Parameters must be integers, in fact UNIX Timestamps, and a hostname or ALL for all hosts")
 		exit(1)
 
     get_data(start_time, end_time)

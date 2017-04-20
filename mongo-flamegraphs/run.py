@@ -24,7 +24,7 @@ def serializable_object(node):
 def get_stacks():
     start_time_set = False
     end_time_set = False
-
+    
     try:
         try:
             start_time = int(request.form['start_time'])
@@ -45,16 +45,34 @@ def get_stacks():
     except Exception:
         end_time_set = False
 
+
+    try:
+        try:
+            hostname = request.form['hostname']
+        except KeyError:
+            hostname = request.args.get('hostname')
+    except Exception:
+        hostname = "ALL"
+
     if  not (start_time_set and end_time_set):
         return abort(400)
 
-    results = db.cpu.find({ 
-        "$and" : [ 
-				{"timestamp" : { "$gte" : start_time}}, 
-				{"timestamp" : { "$lte" : end_time}}
-            ]
-    })
-
+    if hostname == "ALL":
+        results = db.cpu.find({ 
+            "$and" : [ 
+                    {"timestamp" : { "$gte" : start_time}}, 
+                    {"timestamp" : { "$lte" : end_time}},
+                ]
+        })
+    else:
+        results = db.cpu.find({ 
+            "$and" : [ 
+                    {"timestamp" : { "$gte" : start_time}}, 
+                    {"timestamp" : { "$lte" : end_time}},
+                    {"hostname" : hostname}
+                ]
+        })
+    
     stacks = dict()
     for doc in results:
         try:
@@ -67,7 +85,7 @@ def get_stacks():
 def get_flamegraph():
     start_time_set = False
     end_time_set = False
-
+    
     try:
         try:
             start_time = int(request.form['start_time'])
@@ -88,16 +106,34 @@ def get_flamegraph():
     except Exception:
         end_time_set = False
 
+
+    try:
+        try:
+            hostname = request.form['hostname']
+        except KeyError:
+            hostname = request.args.get('hostname')
+    except Exception:
+        hostname = "ALL"
+
     if  not (start_time_set and end_time_set):
         return abort(400)
 
-    results = db.cpu.find({ 
-        "$and" : [ 
-				{"timestamp" : { "$gte" : start_time}}, 
-				{"timestamp" : { "$lte" : end_time}}
-            ]
-    })
-
+    if hostname == "ALL":
+        results = db.cpu.find({ 
+            "$and" : [ 
+                    {"timestamp" : { "$gte" : start_time}}, 
+                    {"timestamp" : { "$lte" : end_time}},
+                ]
+        })
+    else:
+        results = db.cpu.find({ 
+            "$and" : [ 
+                    {"timestamp" : { "$gte" : start_time}}, 
+                    {"timestamp" : { "$lte" : end_time}},
+                    {"hostname" : hostname}
+                ]
+        })
+    
     stacks = dict()
     for doc in results:
         try:
