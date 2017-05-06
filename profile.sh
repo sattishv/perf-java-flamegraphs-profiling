@@ -14,7 +14,7 @@ fi
 
 
 TIME_WINDOW_SECONDS="${1:-30}"
-PROFILING_FREQUENCY="${2:-303}"
+PROFILING_FREQUENCY="${2:-153}"
 echo "[PERF PROFILER] Going to profile with a '$TIME_WINDOW_SECONDS' seconds time window and with '$PROFILING_FREQUENCY' HZ frequency"
 while true
 do
