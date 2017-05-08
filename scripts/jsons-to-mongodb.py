@@ -14,7 +14,7 @@ def eprint(*args, **kwargs):
     print(*args, file=sys.stderr, **kwargs)
 
 
-default_mongodb_port = 5000
+default_mongodb_port = 8000
 default_mongodb_ip = "mongodb"
 default_profiling_database_name = "cpu"
 
@@ -34,7 +34,7 @@ profiling_post_endpoint = os.getenv(PROFILING_POST_ENDPOINT, default_profiling_d
 
 
 max_failed_connection_tries = 4
-post_doc_buffer_length = 2000
+post_doc_buffer_length = 10000
 post_endpoint = 'http://' + mongodb_ip + ':' + mongodb_port + '/' +profiling_post_endpoint 
 
 def send_docs(docs):
