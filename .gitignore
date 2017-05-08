@@ -6,3 +6,5 @@ recording
 timestamps
 *.svg
 *.pyc
+*.data.*
+*.data
