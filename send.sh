@@ -1,5 +1,10 @@
 mkdir -p timestamps
+<<<<<<< HEAD
 export LC_ALL=C
+=======
+
+export MONGODB_PORT=8000
+>>>>>>> 33aa3f85fd5c56e9425dc5a99d555438c4d4777a
 TIME_WINDOW_SECONDS="${1:-30}"
 echo "[MONGODB SENDER] Going to send data every '$TIME_WINDOW_SECONDS' seconds."
 while true
